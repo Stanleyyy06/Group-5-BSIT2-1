@@ -57,7 +57,7 @@ def parse_camera_url(value):
     except ValueError:
         return value
 
-CAMERA_URL = parse_camera_url(os.environ.get("CAMERA_URL", "0"))
+CAMERA_URL = os.environ.get("CAMERA_URL")
 
 
 # Initialize the database immediately when the app is imported
@@ -76,6 +76,8 @@ class CameraStream:
         if not CV2_AVAILABLE:
             return False
         if not self.running:
+            if self.camera_url is None:
+                return False
             self.cap = cv2.VideoCapture(self.camera_url)
             if not self.cap.isOpened():
                 self.cap = None
