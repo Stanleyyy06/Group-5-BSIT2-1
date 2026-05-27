@@ -1,1 +1,7 @@
-web: gunicorn app:app --worker-class=gthread --workers=2 --threads=2
+[build]
+builder = "dockerfile"
+dockerfile = "Dockerfile"
+
+[deploy]
+startCommand = "gunicorn app:app --worker-class=gthread --workers=2 --threads=2 --bind 0.0.0.0:8080"
+healthcheckPath = "/health"
